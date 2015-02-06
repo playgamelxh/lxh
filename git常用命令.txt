@@ -35,3 +35,5 @@ git checkout ***//切换分支
 git status //查看状态
 
 git log //查看提交修改记录
+
+git rm -r --cached -n /a  //将a目录移除版本控制
