@@ -37,3 +37,9 @@ git status //查看状态
 git log //查看提交修改记录
 
 git rm -r --cached -n /a  //将a目录移除版本控制
+
+git remote -v  //查看本地保存的远程分支
+
+git remote add abc abc  //添加远程分支
+
+git push origin abc    //提交到远程分支目录下
