@@ -62,7 +62,7 @@ function createPayQRcode($url, $data)
     header("Content-Type: image/png");
     $img = post($url, $data);
     echo $img;
-    die();
+    exit();
 }
 
 //发送post数据
