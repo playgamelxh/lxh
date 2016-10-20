@@ -17,7 +17,8 @@ include(ROOT_PATH . '/Curl.php');
 $db = new medoo(array(
     'database_type' => 'mysql',
     'database_name' => 'jianshu',
-    'server' => 'localhost',
+//    'server' => 'localhost',
+    'server' => '172.16.13.188',
     'username' => 'root',
     'password' => '123456',
     'port' => 3306,
