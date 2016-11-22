@@ -17,8 +17,7 @@ include(ROOT_PATH . '/Curl.php');
 $db = new medoo(array(
     'database_type' => 'mysql',
     'database_name' => 'jianshu',
-//    'server' => 'localhost',
-    'server' => '172.16.13.188',
+    'server' => 'localhost',
     'username' => 'root',
     'password' => '123456',
     'port' => 3306,
@@ -62,18 +61,23 @@ function getFlower($id, $name)
         $html = $curl->run();
 //        echo $html;
         $p = '/<a class="avatar" href="\/users\/(.*?)"><img/';
+        $p = '/<a href="\/users\/(.*?)">(.*?)<\/a> 关注了专题/';
         preg_match_all($p, $html, $match);
 //        print_r($match);die();
         if (isset($match[1]) && !empty($match[1])) {
-            foreach ($match[1] as $value) {
+            foreach ($match[1] as $key => $value) {
                 $resArr = $db->get('user', '*', array('name' => $value));
                 if (!is_array($resArr) || empty($resArr)) {
-                    $uid = $db->insert('user', array('name' => $value));
+                    $uid = $db->insert('user', array('name' => $value, 'title' => $match[2][$key]));
                     if ($uid > 0) {
                         $resArr['id'] = $uid;
                     } else {
                         print_r($db->error());
                         die();
+                    }
+                } else {
+                    if (empty($resArr['title'])) {
+                        $db->update('user', array('title' => $match[2][$key]), array('id' => $resArr['id']));
                     }
                 }
                 //写入关联表

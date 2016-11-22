@@ -2,11 +2,9 @@
 /**
  * Created by PhpStorm.
  * User: lxh
- * Date: 2016/10/14
- * Time: 下午2:30
- * Desc: 获取用户的关注专题/文集、关注用户、粉丝、文章
+ * Date: 2016/10/21
+ * Time: 下午3:51
  */
-
 ini_set('display_errors', 'ON');
 error_reporting(E_ALL);
 
@@ -26,24 +24,77 @@ $db = new medoo(array(
     'option' => array(PDO::ATTR_CASE => PDO::CASE_NATURAL)
 ));
 $curl = new Curl();
-
 $str = file_get_contents('user.txt');
 $id = intval($str);
-$num = 5;
+$worker_num = 100;
 while (true) {
-    $userArr = $db->get('user', '*', array('id[>]' => $id, 'LIMIT' => $num));
+    $userArr = getInfo($id, $worker_num);
     if (!is_array($userArr) || empty($userArr)) {
         echo "Over!\r\n";
         break;
     }
 
+    for($i = 0; $i < $worker_num; $i++)
+    {
+        $process = new swoole_process('callback_function', true);
+        $pid = $process->start();
+        $workers[$pid] = $process;
+    }
 
+    $i = 0;
+    foreach($workers as $pid => $process)
+    {
+        $process->write(json_encode($userArr[$i]));
+        echo $process->read(),"\r\n";
+        $id = $userArr[$i]['id'];
+        $i++;
+    }
+
+    for($i = 0; $i < $worker_num; $i++)
+    {
+        $ret = swoole_process::wait();
+        $pid = $ret['pid'];
+        unset($workers[$pid]);
+    }
+//    die();
+    file_put_contents('user.txt', $id);
+}
+
+function getConnection()
+{
+    $db = new medoo(array(
+        'database_type' => 'mysql',
+        'database_name' => 'jianshu',
+        'server' => 'localhost',
+        'username' => 'root',
+        'password' => '123456',
+        'port' => 3306,
+        'charset' => 'utf8mb4',
+        'option' => array(PDO::ATTR_CASE => PDO::CASE_NATURAL)
+    ));
+    return $db;
+}
+
+function getInfo($id, $num)
+{
+    $db = getConnection();
+    $userArr = $db->select('user', '*', array('id[>]' => $id, 'LIMIT' => $num));
+    print_r($userArr);
+//    print_r($db->error());
+    $db->clear();
+    return $userArr;
+}
+
+function callback_function(swoole_process $worker)
+{
+    $db = getConnection();
+
+    $recv = $worker->read();
+
+    $userArr = json_decode($recv, true);
 
     //关注专题/文集
     collection($userArr);
-
-    //构造数据
-//    $userArr = array('id' => 7231, 'name' => 'f93e84d2e162');
 
     //关注用户
     following($userArr);
@@ -54,17 +105,18 @@ while (true) {
     //文章
     articles($userArr);
 
-    $id = $userArr['id'];
-    file_put_contents('user.txt', $id);
-    $db->clear();
+    $worker->write(json_encode($db->error()));
+//    sleep(10);
+    $worker->exit(0);
 }
 
 //关注专题/文集
 function collection($userArr)
 {
-    global $db, $curl;
+    $curl = new Curl();
     $page = 1;
     while (true) {
+        $db = getConnection();
         $url = "http://www.jianshu.com/users/{$userArr['name']}/subscriptions?page={$page}";
         $curl->setUrl($url);
         $html = $curl->run();
@@ -93,14 +145,15 @@ function collection($userArr)
             break;
         }
         $page++;
-        echo "collection:{$page}\r\n";
+        echo "collection:{$page}|";
     }
 }
 
 //获取专题信息
 function getCollectionInfo($str, $title)
 {
-    global $curl, $db;
+    global $curl;
+    $db = getConnection();
     $url = "http://www.jianshu.com/collection/{$str}";
     $curl->setUrl($url);
     $html = $curl->run();
@@ -135,9 +188,11 @@ function getCollectionInfo($str, $title)
 //关注用户
 function following($userArr)
 {
-    global $db, $curl;
+    global $curl;
+
     $page = 1;
     while (true) {
+        $db = getConnection();
         $url = "http://www.jianshu.com/users/{$userArr['name']}/following?_pjax=%23list-container&page={$page}";
         $curl->setUrl($url);
         $html = $curl->run();
@@ -167,16 +222,17 @@ function following($userArr)
             break;
         }
         $page++;
-        echo "following:",$page,"\r\n";
+        echo "following:",$page,"|";
     }
 }
 
 //粉丝
 function follower($userArr)
 {
-    global $db, $curl;
+    global $curl;
     $page = 1;
     while (true) {
+        $db = getConnection();
         $url = "http://www.jianshu.com/users/{$userArr['name']}/followers?page={$page}";
         $curl->setUrl($url);
         $html = $curl->run();
@@ -206,16 +262,17 @@ function follower($userArr)
             break;
         }
         $page++;
-        echo "follower:".$page,"\r\n";
+        echo "follower:".$page,"|";
     }
 }
 
 //文章
 function articles($userArr)
 {
-    global $db, $curl;
+    global $curl;
     $page = 1;
     while (true) {
+        $db = getConnection();
         $url = "http://www.jianshu.com/users/{$userArr['name']}/latest_articles?page={$page}";
         $curl->setUrl($url);
         $html = $curl->run();
@@ -250,14 +307,14 @@ function articles($userArr)
             break;
         }
         $page++;
-        echo "article:".$page,"\r\n";
+        echo "article:".$page,"|";
     }
 }
 
 //获取文章详情
 function getArticleInfo($name)
 {
-    global $db;
+    $db = getConnection();
     $curl = new Curl();
     $url = "http://www.jianshu.com/p/{$name}";
     $ip = rand(1,255).'.'.rand(1,255).'.'.rand(1,255).'.'.rand(1,255);
