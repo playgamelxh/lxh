@@ -68,4 +68,35 @@ class Curl
     {
         curl_close($this->ch);
     }
+
+    //保存图片
+    public function saveImage($filename)
+    {
+        $fp = fopen($filename, 'wb');
+        curl_setopt($this->ch, CURLOPT_FILE, $fp);
+        curl_setopt($this->ch, CURLOPT_HEADER,0);
+        curl_setopt($this->ch, CURLOPT_FOLLOWLOCATION,1);
+        //curl_setopt($hander,CURLOPT_RETURNTRANSFER,false);//以数据流的方式返回数据,当为false是直接显示出来
+        curl_setopt($this->ch, CURLOPT_TIMEOUT,60);
+        curl_exec($this->ch);
+        curl_close($this->ch);
+        fclose($fp);
+        return true;
+    }
+
+    //并发多个请求
+    public function multi($urlArr)
+    {
+        $mrc = array();
+        if (is_array($urlArr) && !empty($urlArr)) {
+            $mch = curl_multi_init();
+            foreach ($urlArr as $url) {
+                $this->setUrl($url);
+                curl_multi_add_handle($mch, $this->ch);
+            }
+            $mrc = curl_multi_exec($mch);
+        }
+        return $mrc;
+    }
+
 }

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap</title>
+
+    <!-- Bootstrap -->
+    <link href="./bootstrap-3.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<style>
+    .left{
+        width: 160px;
+        border: 1px solid #ccc;
+    }
+    .right{
+        /*width: 630px;*/
+        min-height: 500px;
+        border: 1px solid #ccc;
+        margin: 0 0 0 20px;
+        display: block;
+        float: left;
+    }
+    .left .row{
+        line-height: 70px;vertical-align: middle;text-align: center;border-bottom: 1px solid #ccc;
+    }
+</style>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3">
+            <img src="//static.xidibuy.com/static/global/images/1.0.0/logo-hd.png">
+        </div>
+        <div class="col-md-9" style="line-height: 75px;vertical-align: middle;">
+            监控&预警系统 首页 日常任务 值班 签到&Check 服务器监控 应用系统监控 欢迎 Xiucai 退出
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2 left">
+            <div class="row">日常任务</div>
+            <div class="row">值班</div>
+            <div class="row">日常任务</div>
+            <div class="row">值班</div>
+            <div class="row">日常任务</div>
+            <div class="row">值班</div>
+            <div class="row">日常任务</div>
+            <div class="row">值班</div>
+        </div>
+
+        <div class="col-md-9 right">
+            <div class="row"><input type="button" class="btn btn-primary" value="添加任务" style="float: right"></div>
+            <div class="row"><hr></div>
+            <div class="row">
+                <table>
+                    <th>
+                        <td>编号</td>
+                        <td>任务名称</td>
+                        <td>任务内容</td>
+                        <td>添加时间</td>
+                        <td>最后修改时间</td>
+                        <td>操作</td>
+                    </th>
+                    <tr>
+                        <td>1</td>
+                        <td>检查网络可用性</td>
+                        <td>网络连通、宽带消耗</td>
+                        <td>2016/11/5</td>
+                        <td>2016/11/5</td>
+                        <td><a>编辑</a><span>|</span><a>删除</a></td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>检查网络可用性</td>
+                        <td>网络连通、宽带消耗</td>
+                        <td>2016/11/5</td>
+                        <td>2016/11/5</td>
+                        <td><a>编辑</a><span>|</span><a>删除</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="./bootstrap-3.3.0/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
