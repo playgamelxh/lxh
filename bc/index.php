@@ -12,7 +12,7 @@
 //    $num = '624544';//木木 支 已 +10
 //    $num = '666540';//明月清风 +++
 //    $num = '173100';    //大笨牛 10 Q
-    $num = '054530';
+    $num = '308163';
 
     $i = 1;
     while (true) {
@@ -56,7 +56,7 @@
 
         $str = $curlObj->run(); var_dump($str);
         print_r(json_decode($str, true));
-        $curlObj->setProxyIp("");
+//        $curlObj->setProxyIp("");
         
         $code = '';
         for ($i = 1; $i <= 9999; $i++) {

@@ -41,6 +41,12 @@ class Curl
         curl_setopt($this->ch, CURLOPT_HTTPHEADER, $headers);
         return $this;
     }
+
+    public function disableSSL()
+    {
+        curl_setopt($this->ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+    }
+
     public function setTimeout($t)
     {
     	curl_setopt($this->ch, CURLOPT_TIMEOUT, $t);
