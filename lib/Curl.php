@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 'ON');
+error_reporting(E_ALL);
+
 class Curl
 {
     protected $ch;
@@ -19,7 +22,11 @@ class Curl
     public function setPost($data)
     {
         curl_setopt($this->ch, CURLOPT_POST, 1);
-        curl_setopt($this->ch, CURLOPT_POSTFIELDS, $data);
+        if (is_array($data)) {
+            curl_setopt($this->ch, CURLOPT_POSTFIELDS, http_build_query($data));
+        } else {
+            curl_setopt($this->ch, CURLOPT_POSTFIELDS, $data);
+        }
         return $this;
     }
 
@@ -45,15 +52,18 @@ class Curl
     public function disableSSL()
     {
         curl_setopt($this->ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        return $this;
+//        curl_setopt($this->ch, CURLOPT_SSL_VERIFYHOST, 2);
     }
 
     public function setTimeout($t)
     {
     	curl_setopt($this->ch, CURLOPT_TIMEOUT, $t);
+        return $this;
     }
     public function run()
     {
-        curl_setopt($this->ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($this->ch, CURLOPT_FOLLOWLOCATION, 0);
         curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($this->ch,CURLOPT_CONNECTTIMEOUT, 5);
         $html = curl_exec($this->ch);
@@ -70,6 +80,22 @@ class Curl
         curl_setopt($this->ch, CURLOPT_PROXY, $ip);
     }
 
+    //ssl
+    public function ssl($file)
+    {
+        curl_setopt($this->ch, CURLOPT_SSL_VERIFYPEER, true);   // 只信任CA颁布的证书
+        curl_setopt($this->ch, CURLOPT_CAINFO, $file);      // CA根证书（用来验证的网站证书是否是CA颁布）
+        curl_setopt($this->ch, CURLOPT_SSL_VERIFYHOST, 2);
+
+//        curl_setopt($this->ch,  CURLOPT_SSL_VERIFYPEER,false);
+//        curl_setopt($this->ch,  CURLOPT_SSL_VERIFYHOST,false);
+//        curl_setopt($this->ch,  CURLOPT_SSLCERTTYPE,'PEM');
+//        curl_setopt($this->ch,  CURLOPT_SSLCERT,'/data/cert/php.pem');
+//        curl_setopt($this->ch,  CURLOPT_SSLCERTPASSWD,'1234');
+//        curl_setopt($this->ch,  CURLOPT_SSLKEYTYPE,'PEM');
+//        curl_setopt($this->ch,  CURLOPT_SSLKEY,'/data/cert/php_private.pem');
+    }
+
     public function close()
     {
         curl_close($this->ch);
@@ -81,8 +107,8 @@ class Curl
         $fp = fopen($filename, 'wb');
         curl_setopt($this->ch, CURLOPT_FILE, $fp);
         curl_setopt($this->ch, CURLOPT_HEADER,0);
-        curl_setopt($this->ch, CURLOPT_FOLLOWLOCATION,1);
-        //curl_setopt($hander,CURLOPT_RETURNTRANSFER,false);//以数据流的方式返回数据,当为false是直接显示出来
+        curl_setopt($this->ch, CURLOPT_FOLLOWLOCATION, 0);
+        curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true);//以数据流的方式返回数据,当为false是直接显示出来
         curl_setopt($this->ch, CURLOPT_TIMEOUT,60);
         curl_exec($this->ch);
         curl_close($this->ch);
