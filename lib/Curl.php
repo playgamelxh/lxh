@@ -19,6 +19,12 @@ class Curl
         return $this;
     }
 
+    public function setGet()
+    {
+        curl_setopt($this->ch, CURLOPT_POST, 0);
+        return $this;
+    }
+
     public function setPost($data)
     {
         curl_setopt($this->ch, CURLOPT_POST, 1);
@@ -56,6 +62,12 @@ class Curl
 //        curl_setopt($this->ch, CURLOPT_SSL_VERIFYHOST, 2);
     }
 
+    public function proxy($proxy="IP:端口", $proxyauth = '账号:密码')
+    {
+        curl_setopt ($this->ch, CURLOPT_PROXY, $proxy);
+        curl_setopt($this->ch, CURLOPT_PROXYUSERPWD, $proxyauth);
+    }
+
     public function setTimeout($t)
     {
     	curl_setopt($this->ch, CURLOPT_TIMEOUT, $t);
@@ -63,7 +75,7 @@ class Curl
     }
     public function run()
     {
-        curl_setopt($this->ch, CURLOPT_FOLLOWLOCATION, 0);
+        curl_setopt($this->ch, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($this->ch,CURLOPT_CONNECTTIMEOUT, 5);
         $html = curl_exec($this->ch);

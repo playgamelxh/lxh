@@ -1,0 +1,41 @@
+ {% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+		<title>交子币区块浏览器</title>
+		<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<link rel="stylesheet" href="{{ STATIC_URL }}css/index.css">
+	</head>
+	<body>
+		<div class="navbar">
+			<div class="navbar-nav-scroll">
+				<ul class="navbar-nav bd-navbar-nav flex-row">
+					<li class="nav-item iocn">
+						<img src="{{ STATIC_URL }}img/oioc.png" />
+					</li>
+					<li class="nav-item">
+						<a class="nav-link " href="javascript:void();">交子币</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link " href="/">区块浏览器</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link " href="/rank">钱包排行</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link " href="/nodelist">节点列表</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="container">
+
+		</div>
+
+		<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+		<script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	</body>
+</html>

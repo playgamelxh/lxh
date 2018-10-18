@@ -1,0 +1,11 @@
+*** Starting uWSGI 2.0.17 (64bit) on [Sun May  6 21:23:51 2018] ***
+compiled with version: 4.2.1 Compatible Apple LLVM 9.1.0 (clang-902.0.39.1) on 26 April 2018 09:07:10
+os: Darwin-17.5.0 Darwin Kernel Version 17.5.0: Mon Mar  5 22:24:32 PST 2018; root:xnu-4570.51.1~1/RELEASE_X86_64
+nodename: lxhdeMacBook-Pro.local
+machine: x86_64
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 8
+current working directory: /www/lxh/python/uwsgi
+writing pidfile to /www/lxh/python/uwsgi/demsite/uwsgi9090.pid    //pid文件，用于下面的脚本启动、停止该进程
+open("/www/lxh/python/uwsgi/demsite/uwsgi9090.pid    //pid文件，用于下面的脚本启动、停止该进程"): No such file or directory [core/utils.c line 3605]

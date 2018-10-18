@@ -32,20 +32,28 @@
         sleep(10);
 
         //1、找到群
-        $group = $groups->firstByAttribute('name', 'PCC石油链官方五群');
+        $group = $groups->firstByAttribute('name', 'PCC玩美用户交流群');
 
         //每天签到
         if (time() - $day > 86400) {
             $message = new GroupMessage($group, new Content('签到'));
             $result = $smartQQ->sendMessage($message);
-            var_dump($result);
+            var_dump($result);echo "已签到\r\n";
             $day = time();
         }
         //每小时抽奖
         if (time() - $hour > 3600) {
+            $message = new GroupMessage($group, new Content('活动'));
+            $result = $smartQQ->sendMessage($message);
+            var_dump($result);echo "已活动\r\n";
+            $hour = time();
+        }
+
+        //每小时抽奖
+        if (time() - $hour > 3600) {
             $message = new GroupMessage($group, new Content('我要PCC'));
             $result = $smartQQ->sendMessage($message);
-            var_dump($result);
+            var_dump($result);echo "已抽奖\r\n";
             $hour = time();
         }
 

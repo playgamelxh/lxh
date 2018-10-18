@@ -4,10 +4,10 @@
 
 include '/www/lxh/lib/adb/adbconsole.php';
 include '/www/lxh/lib/adb/func.php';
- 
+
 $adbinfo = array(
-	'host' => '192.168.3.9',
-	'port' => '5555'
+    'host' => '192.168.3.9',
+    'port' => '5555'
 );
 
 $adb = new adbconsole($adbinfo);

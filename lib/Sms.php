@@ -57,7 +57,7 @@ class Sms
             );
             $context = stream_context_create($opts);
             $str = file_get_contents($this->getMsgUrl . $phone, false, $context);
-            echo $str,"\r\ ";
+            echo $str,"\r\n";
             $temp = explode('|', $str);
             if ($temp[0] == 1) {
                 return $temp['1'];

@@ -1,0 +1,89 @@
+<!DOCTYPE html><html><head><title></title><link rel="stylesheet" href="/themes/Cerulean/bootstrap.min.css"><link rel="stylesheet" href="/vendor/jqplot/jquery.jqplot.css"><link rel="stylesheet" href="//cdn.datatables.net/plug-ins/725b2a2115b/integration/bootstrap/3/dataTables.bootstrap.css"><link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"><link rel="stylesheet" href="/stylesheets/style.css"><script src="/vendor/jqplot/jquery.min.js"></script><script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script><script src="/vendor/jqplot/jquery.jqplot.min.js"></script><script src="/vendor/jqplot/plugins/jqplot.dateAxisRenderer.min.js"></script><script src="/vendor/jqplot/plugins/jqplot.ohlcRenderer.min.js"></script><script src="/vendor/jqplot/plugins/jqplot.highlighter.min.js"></script><script src="/vendor/jqplot/plugins/jqplot.pieRenderer.min.js"></script><script src="/vendor/jqplot/plugins/jqplot.barRenderer.min.js"></script><script src="/vendor/jqplot/plugins/jqplot.categoryAxisRenderer.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script><script src="//cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"> </script><script src="//cdn.datatables.net/responsive/1.0.1/js/dataTables.responsive.js"></script><script src="//cdn.datatables.net/plug-ins/725b2a2115b/integration/bootstrap/3/dataTables.bootstrap.js"></script><script src="/javascripts/chart.js"></script><script>$(document).ready(function(){
+  function update_stats(){
+    $.ajax({url: '/ext/summary', success: function(json){
+      $("#supply").text(json.data[0].supply);
+      $("#difficulty").text(json.data[0].difficulty);
+      $("#hashrate").text(json.data[0].hashrate);
+      $("#lastPrice").text(json.data[0].lastPrice.toFixed(8));
+      $("#lblConnections").text(json.data[0].connections + ' 个连接');
+      $("#lblBlockcount").text(json.data[0].blockcount + ' 个区块');
+    }});
+  }
+  $('.block-last-next').tooltip({
+    animation: true,
+    delay: { hide: 500 },
+  });
+  $('.history-table').dataTable( {
+    searching: false,
+    ordering: false,
+    responsive: true
+  });
+  $('.iquidus').css('color',$('.table').css('color'));
+  $(window).resize(function () {
+    $($.fn.dataTable.tables( true ) ).DataTable().columns.adjust();
+  });
+  setInterval( function() {
+    update_stats();
+  }, 60000);
+  update_stats();
+});</script></head><body><div role="navigation" class="nav navbar navbar-default navbar-fixed-top"><div class="container-fluid"><div class="navbar-header"><button type="button" data-toggle="collapse" data-target="#navbar-collapse" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="/" class="navbar-brand">交子币</a></div><div id="navbar-collapse" class="collapse navbar-collapse"><ul class="nav navbar-nav"><li class="active"><a href="/" class="navbar-link"><span class="glyphicon glyphicon-search"></span><span class="menu-text">区块浏览器</span></a></li><li><a href="/richlist" class="navbar-link"><span class="fa fa-btc"></span><span class="menu-text">富豪榜100名</span></a></li><li class="hidden-xs"><a href="/info" class="navbar-link"><span class="glyphicon glyphicon-info-sign"></span><span class="menu-text">API</span></a></li></ul></div></div></div><div class="col-md-12"><div class="row text-center"><div class="col-md-2 col-md-offset-1"><div class="panel panel-default hidden-sm hidden-xs"><div class="panel-heading"><strong>网络 (MH/s)</strong></div><div class="panel-body"><label id="hashrate">-</label></div></div></div><div class="col-md-2"><div class="panel panel-default hidden-sm hidden-xs"><div class="panel-heading"><strong>难度</strong></div><div class="panel-body"><label id="difficulty">-</label></div></div></div><div class="col-md-2 col-sm-12"><img src="/images/logo.png" style="margin-top:-15px;height:128px;"></div><div class="col-md-2"><div class="panel panel-default hidden-sm hidden-xs"><div class="panel-heading"><strong>总量 (OIOC)</strong></div><div class="panel-body"><label id="supply">-</label></div></div></div><div class="col-md-2"><div class="panel panel-default hidden-sm hidden-xs"><div class="panel-heading"><strong>BTC Price</strong></div><div class="panel-body"><label id="lastPrice">-</label></div></div></div></div><div style="margin-top:10px;margin-bottom:20px;" class="row text-center"><form method="post" action="/search" class="form-inline">     <div id="index-search" class="form-group"><input type="text" name="search" placeholder="您可以输入 block height, block hash, tx hash or address." style="min-width:80%;margin-right:5px;" class="form-control"><button type="submit" class="btn btn-success">搜索</button></div></form></div></div><script>$(document).ready(function(){
+  var stable = $('#block-table').dataTable( {
+    autoWidth: true,
+    searching: true,
+    ordering: false,
+    responsive: true,
+    lengthChange: false,
+    processing: true,
+    paging: false,
+    info: false,
+    ajax: {
+      url: '/ext/summary',
+      dataSrc: function ( json ) {
+      console.log(json.data);
+        json.data[0]['height'] = "<a href='/block/" + json.data[0]['hash'] + "'>" + json.data[0]['height'] + "</a>";
+        return json.data;
+      }
+    },
+    columns: [
+      //{ data: 'height', width: '8%' },
+      { data: 'difficulty', width: '10%' },
+      //{ data: 'size', width:'10%' },
+      //{ data: 'txs', width: '10%' },
+      { data: 'supply', width: '15%' },
+      //{ data: 'time', width: '20%' },
+    ]
+  });
+  var rtable = $('#recent-table').dataTable( {
+    autoWidth: true,
+    searching: false,
+    ordering: false,
+    responsive: true,
+    lengthChange: true,
+    processing: true,
+    ajax: {
+      url: '/ext/getlasttxs/100/0',
+      dataSrc: function ( json ) {
+        for ( var i=0;i<json.data.length; i++ ) {
+          json.data[i]['timestamp'] = new Date((json.data[i]['timestamp']) * 1000).toUTCString();
+          json.data[i]['txid'] = "<a href='/tx/" + json.data[i]['txid'] + "'>" + json.data[i]['txid'] + "</a>";
+          json.data[i]['blockindex'] = "<a href='/block/" + json.data[i]['blockhash'] + "'>" + json.data[i]['blockindex'] + "</a>";
+          var amount = json.data[i]['total'] / 100000000;
+          json.data[i]['total'] = amount.toFixed(8);
+          json.data[i]['recipients'] = json.data[i]['vout'].length;
+        }
+        return json.data;
+      }
+    },
+    columns: [
+      { data: 'blockindex', width: '8%' },
+      { data: 'txid', width: '40%' },
+      { data: 'recipients', width:'5%' },
+      { data: 'total', width: '15%' },
+      { data: 'timestamp', width: '25%' },
+    ]
+  });
+  setInterval( function () {
+    rtable.api().ajax.reload(null, false);
+    stable.api().ajax.reload(null, false);
+  }, 60000 );
+});</script><div class="row"><div class="col-md-12"></div></div><div class="col-md-12"><div class="panel panel-default"><div class="panel-heading"><strong>最新交易记录</strong></div><table id="recent-table" class="table table-bordered table-striped"><thead><tr><th class="text-center">区块</th><th class="hidden-xs text-center">Hash</th><th class="hidden-xs text-center">收款人</th><th class="text-center">Amount (OIOC)</th><th class="text-center">时间戳</th></tr></thead><tbody class="text-center"></tbody></table></div><div class="footer-padding"></div></div><div class="navbar navbar-default navbar-fixed-bottom hidden-xs"><div class="col-md-4"></div><div class="col-md-4"><ul class="nav"><li style="margin-left:80px;margin-right:80px;" class="text-center"><p style="margin-top:15px;"><a href="javascripts:void(0);" target="_blank" class="navbar-link">交子币团队 </a></p></li></ul></div><span class="connections"><label id="lblBlockcount" class="label label-default">-</label><label id="lblConnections" class="label label-default">-</label></span></div></body></html>

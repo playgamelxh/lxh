@@ -1,0 +1,129 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Candy Box - All Candies in One Box</title>
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta name="description" content="Candy Box - All Candies in One Box">
+  <link rel="shortcut icon" href="https://candy-s.futurity.cn/ui/favicon.ico">
+  <link rel="stylesheet" href="https://candy-s.futurity.cn/ui/css/bootstrap.css">
+  <link rel="stylesheet" href="https://candy-s.futurity.cn/ui/css/base.css">
+  <link rel="stylesheet" href="https://candy-s.futurity.cn/ui/css/my_invite.css">
+</head>
+
+<script>
+  function copy()
+  {
+    var link=document.getElementById("share_link");
+    link.select();
+    document.execCommand("Copy");
+    show_green_tip("The invitation link has been copied to the clipboard");
+  }
+</script>
+<body>
+  <header class="navbar navbar-inverse navbar-fixed-top visible-d">
+          <div class="navbar-header">
+            <!-- responsive nav button -->
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+            <!-- /responsive nav button -->
+              <!-- /logo -->
+              <a class="navbar-brand" href="#">
+                  <img src="https://candy-s.futurity.cn/ui/images/logo.png" width="58" class="logo">
+                  <div class="logo_escription">
+                    <p class="logo_title">Candy Box</p>
+                    <p class="logo_sub">All Candies in One Box</p>
+                  </div>
+              </a>
+          </div>
+          <!-- main nav -->
+          <nav class="collapse navbar-collapse navbar-right" role="Navigation">
+              <ul id="nav" class="nav navbar-nav">
+                <li class="visible-xs"><a href="/candy">Candy Box</a></li>
+                <li class="visible-xs"><a href="/invite">Invite Friends</a></li>
+                <li class="visible-xs"><a href="/about">About</a></li>
+                  <li class="login_name hidden-xs hidden-sm">
+                    <p> 8615080832694</p>
+                    <p>LOGGED IN AS</p>
+                    <span class="line"></span>
+                  </li>
+                  <li>
+                    <a href="/logout" class="exit">
+                      <img src="https://candy-s.futurity.cn/ui/images/exit.png" width="18px" class="hidden-xs">
+                      <p>Exit</p>
+                      <p class="visible-xs importantfr"> 8615080832694</p>
+                    </a>
+                  </li>
+              </ul>
+          </nav>
+  </header>
+  
+  <div class="left_nav">
+    <ul>
+      <li><a href="/candy">Candy Box</a></li>
+      <li><a href="/invite" class="active">Invite Friends</a></li>
+      <li><a href="/about">About</a></li>
+    </ul>
+  </div>
+      
+  <div class="right_content">
+    <p class="panel_title">Invite Friends</p>
+    <p class="description hidden-xs">Invite and get more candies</p>
+    <div class="panel">
+      <p class="panel_title">Invite your friends</p>
+      <div class="invitebox clearfix">
+        <input type="text" id="share_link" class="invite_input fl" value="https://candy.one/i/274208" readonly>
+        <a href="javascript:copy()"  class="copy fl hidden-xs">Copy</a>  
+      </div>
+    </div>  
+    <div class="panel">
+      <p class="panel_title">Total Candy Bonus</p>
+      <div class="network clearfix bonusbox">
+        <div class="left_bonus onework">
+          <img src="https://candy-s.futurity.cn/ui/images/candy_coin.png" width="58">
+          <span>CANDY</span>
+        </div>
+        <div class="right_num onework"> 100</div>
+      </div>
+    </div>
+    <div class="panel">
+      <p class="panel_title">Invitation Network</p>
+      <div class="clearfix network invitebox2">
+        <div class="onework">
+          <p>M1</p>
+          <p> 0</p>
+        </div>
+        <div class="onework">
+          <p>M2</p>
+          <p> 0</p>
+        </div>
+        <div class="onework">
+          <p>M3</p>
+          <p> 0</p>
+        </div>
+        <div class="onework">
+          <p>M4</p>
+          <p> 0</p>
+        </div>
+        <div class="onework">
+          <p>M5</p>
+          <p> 0</p>
+        </div>
+        <div class="onework">
+          <p>M6</p>
+          <p> 0</p>
+        </div>
+      </div>
+    </div>        
+  </div>
+<script src="https://candy-s.futurity.cn/ui/js/jquery.min.js"></script>   
+<script src="https://candy-s.futurity.cn/ui/js/index.js"></script> 
+<script src="https://candy-s.futurity.cn/ui/js/bootstrap.min.js"></script>    
+</body>
+</html>
+
